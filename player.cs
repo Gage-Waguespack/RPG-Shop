@@ -12,15 +12,17 @@ namespace HelloWorld
         public Player()
         {
             _gold = 100;
+            //creates a new item array with three items with deafault values
             _inventory = new Item[3];
         }
 
-        public bool Buy(Item item, int index)
+        public bool Buy(Item item, int inventoryindex)
         {
             if (_gold >= item.cost)
             {
+                // pays for the item then places it in the inventory array
                 _gold -= item.cost;
-                _inventory[index] = item;
+                _inventory[inventoryindex] = item;
                 return true;
             }
             return false;

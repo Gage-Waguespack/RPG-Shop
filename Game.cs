@@ -23,7 +23,7 @@ namespace HelloWorld
         private Item _gem;
         private bool _gameOver = false;
         private Player _player;
-        private Shop shop;
+        private Shop _shop;
         private Item[] _shopInventory;
         //Run the game
         public void Run()
@@ -40,6 +40,11 @@ namespace HelloWorld
         public void Start()
         {
             Console.WriteLine("Welcome!!! \nWanna take a look at my wares??");
+            _gameOver = false;
+            _player = new Player();
+            InitializeItems();
+            _shopInventory = new Item[] { _arrow, _shield, _gem };
+            _shop = new Shop(_shopInventory);
         }
 
         private void InitializeItems()
@@ -54,8 +59,9 @@ namespace HelloWorld
 
         public void PrintInventory(Item[] inventory)
         {
-            for(int i = 0; i < _shopInventory.Length; i++)
+            for(int i = 0; i < inventory.Length; i++)
             {
+                Console.WriteLine((i + 1) + ". " + inventory[i].name + inventory[i].cost);
                 _shopInventory[i] = inventory[i];
             }
         }
@@ -63,19 +69,79 @@ namespace HelloWorld
         private void OpenShopMenu()
         {
             Console.WriteLine("So, you seem to be an adventurer! \nWell I may have just what you need, no matter what class you are!");
-            char input = ' ';
-            input = Console.ReadKey().KeyChar;
-            if(input == '1')
+            PrintInventory(_shopInventory);
+
+            //Get player input
+            char input = Console.ReadKey().KeyChar;
+
+            //Set itemIndex to be the index the player selected
+            int itemIndex = -1;
+            switch (input)
             {
-                _player.Buy(_arrow, 0);
-                Shop.Sell(_player, 0, 0);
+                case '1':
+                    {
+                        itemIndex = 0;
+                        break;
+                    }
+                case '2':
+                    {
+                        itemIndex = 1;
+                        break;
+                    }
+                case '3':
+                    {
+                        itemIndex = 2;
+                        break;
+                    }
+                default:
+                    {
+                        return;
+                    }
             }
+            //if the player can't afford the item, print a message to let them know
+            if (_player.GetGold() < _shopInventory[itemIndex].cost)
+            {
+                Console.WriteLine("You can't afford this.");
+                return;
+            }
+
+            // Ask the player a slot to replace their own inventory
+            Console.WriteLine("Choose a slot to replace!");
+            PrintInventory(_shopInventory);
+
+            input = Console.ReadKey().KeyChar;
+
+            int playerIndex = -1;
+            switch (input)
+            {
+                case '1':
+                    {
+                        playerIndex = 0;
+                        break;
+                    }
+                case '2':
+                    {
+                        playerIndex = 1;
+                        break;
+                    }
+                case '3':
+                    {
+                        playerIndex = 2;
+                        break;
+                    }
+                default:
+                    {
+                        return;
+                    }
+            }
+            _shop.Sell(_player, itemIndex, playerIndex);
+
         }
 
         //Repeated until the game ends
         public void Update()
         {
-            
+            OpenShopMenu();
         }
 
         //Performed once when the game ends

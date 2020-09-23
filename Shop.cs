@@ -17,13 +17,19 @@ namespace HelloWorld
 
         public Shop(Item[] items)
         {
+            //sets out inventory arrat to be the array of items that was passed in!!!
             _inventory = items;
             _gold = 500;
         }
-        public bool Sell(Player player, int index, int playerindex)
+        public bool Sell(Player player, int itemIndex, int playerIndex)
         {
-            if(player.Buy(_inventory[index], playerindex))
+            //find the item to buy in the inventory array
+            Item itemToBuy = _inventory[itemIndex];
+            //check to see if the player purchased the item successfully
+            if(player.Buy(itemToBuy, playerIndex))
             {
+                //Increase shops gold by item cost to complete the transaction
+                _gold += itemToBuy.cost;
                 return true;
             }
             return false;
