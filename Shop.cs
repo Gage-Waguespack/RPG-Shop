@@ -15,9 +15,18 @@ namespace HelloWorld
             _gold = 500;
         }
 
-        public Shop()
+        public Shop(Item[] items)
         {
-
+            _inventory = items;
+            _gold = 500;
+        }
+        public bool Sell(Player player, int index, int playerindex)
+        {
+            if(player.Buy(_inventory[index], playerindex))
+            {
+                return true;
+            }
+            return false;
         }
 
     }

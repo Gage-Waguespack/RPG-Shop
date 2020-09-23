@@ -15,9 +15,15 @@ namespace HelloWorld
             _inventory = new Item[3];
         }
 
-        public bool Buy()
+        public bool Buy(Item item, int index)
         {
-            
+            if (_gold >= item.cost)
+            {
+                _gold -= item.cost;
+                _inventory[index] = item;
+                return true;
+            }
+            return false;
         }
 
         public int GetGold()

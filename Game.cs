@@ -22,7 +22,9 @@ namespace HelloWorld
         private Item _shield;
         private Item _gem;
         private bool _gameOver = false;
-
+        private Player _player;
+        private Shop shop;
+        private Item[] _shopInventory;
         //Run the game
         public void Run()
         {
@@ -38,6 +40,36 @@ namespace HelloWorld
         public void Start()
         {
             Console.WriteLine("Welcome!!! \nWanna take a look at my wares??");
+        }
+
+        private void InitializeItems()
+        {
+            _arrow.name = "Arrow";
+            _arrow.cost = 20;
+            _shield.name = "Shield";
+            _shield.cost = 30;
+            _gem.name = "Healing Gem";
+            _gem.cost = 50;
+        }
+
+        public void PrintInventory(Item[] inventory)
+        {
+            for(int i = 0; i < _shopInventory.Length; i++)
+            {
+                _shopInventory[i] = inventory[i];
+            }
+        }
+
+        private void OpenShopMenu()
+        {
+            Console.WriteLine("So, you seem to be an adventurer! \nWell I may have just what you need, no matter what class you are!");
+            char input = ' ';
+            input = Console.ReadKey().KeyChar;
+            if(input == '1')
+            {
+                _player.Buy(_arrow, 0);
+                Shop.Sell(_player, 0, 0);
+            }
         }
 
         //Repeated until the game ends
